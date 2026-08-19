@@ -507,7 +507,15 @@ function Index() {
         })()}
 
       {panel.kind === "intake" && (
-        <IntakeDrop onAdd={addSong} onClose={() => setPanel({ kind: "none" })} />
+        <IntakeDrop
+          onAdd={(s) => {
+            setData((d) => ({ ...d, songs: [...d.songs, s] }));
+            setNewSongId(s.id);
+            say(`“${s.title}” set down in the corner.`);
+            setTimeout(() => setNewSongId(null), 1200);
+          }}
+          onClose={() => setPanel({ kind: "none" })}
+        />
       )}
 
       {panel.kind === "notes" && (
