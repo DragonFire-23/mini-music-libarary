@@ -1,0 +1,284 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * The Little Music Library — design system.
+ * Warm wood, parchment, amber lamplight. All colors are oklch tokens.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-wood-deep: var(--wood-deep);
+  --color-wood: var(--wood);
+  --color-wood-light: var(--wood-light);
+  --color-parchment: var(--parchment);
+  --color-parchment-dim: var(--parchment-dim);
+  --color-amber: var(--amber);
+  --color-moss: var(--moss);
+  --color-dust: var(--dust);
+  --color-ink: var(--ink);
+
+  --font-serif-book: "Cormorant Garamond", Georgia, serif;
+  --font-hand: "Caveat", cursive;
+  --font-plate: "IM Fell English", Georgia, serif;
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --wood-deep: oklch(0.19 0.028 55);
+  --wood: oklch(0.29 0.045 55);
+  --wood-light: oklch(0.42 0.055 60);
+  --parchment: oklch(0.91 0.035 85);
+  --parchment-dim: oklch(0.78 0.04 82);
+  --amber: oklch(0.79 0.14 72);
+  --moss: oklch(0.52 0.055 140);
+  --dust: oklch(0.88 0.05 85);
+  --ink: oklch(0.28 0.03 60);
+
+  --background: oklch(0.16 0.024 52);
+  --foreground: oklch(0.89 0.032 84);
+  --card: oklch(0.24 0.036 55);
+  --card-foreground: oklch(0.89 0.032 84);
+  --popover: oklch(0.22 0.033 55);
+  --popover-foreground: oklch(0.89 0.032 84);
+  --primary: oklch(0.79 0.14 72);
+  --primary-foreground: oklch(0.2 0.04 60);
+  --secondary: oklch(0.3 0.04 58);
+  --secondary-foreground: oklch(0.9 0.03 84);
+  --muted: oklch(0.27 0.03 58);
+  --muted-foreground: oklch(0.7 0.035 80);
+  --accent: oklch(0.52 0.055 140);
+  --accent-foreground: oklch(0.94 0.02 85);
+  --destructive: oklch(0.52 0.15 28);
+  --destructive-foreground: oklch(0.94 0.02 85);
+  --border: oklch(0.36 0.04 58);
+  --input: oklch(0.34 0.04 58);
+  --ring: oklch(0.79 0.14 72);
+
+  --grain: repeating-linear-gradient(
+    91deg,
+    oklch(0 0 0 / 0.11) 0px,
+    oklch(0 0 0 / 0) 2px,
+    oklch(1 0 0 / 0.025) 4px,
+    oklch(0 0 0 / 0.08) 7px
+  );
+  --paper: linear-gradient(158deg, oklch(0.93 0.035 88), oklch(0.85 0.045 80));
+  --lamp-glow: radial-gradient(
+    circle at center,
+    oklch(0.86 0.13 78 / 0.55) 0%,
+    oklch(0.8 0.13 70 / 0.24) 34%,
+    oklch(0.7 0.12 62 / 0.08) 62%,
+    transparent 78%
+  );
+  --shadow-shelf: 0 18px 34px -14px oklch(0 0 0 / 0.8);
+  --shadow-object: 0 8px 18px -8px oklch(0 0 0 / 0.75);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-serif-book);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: oklch(0.79 0.14 72 / 0.35);
+  }
+}
+
+@utility wood-surface {
+  background-image: var(--grain), linear-gradient(178deg, var(--wood-light), var(--wood));
+  background-blend-mode: overlay, normal;
+}
+
+@utility wood-deep-surface {
+  background-image: var(--grain), linear-gradient(178deg, var(--wood), var(--wood-deep));
+  background-blend-mode: overlay, normal;
+}
+
+@utility paper-surface {
+  background-image: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-object);
+}
+
+@utility hand {
+  font-family: var(--font-hand);
+}
+
+@utility plate-type {
+  font-family: var(--font-plate);
+  letter-spacing: 0.04em;
+}
+
+@utility lamp-pool {
+  background-image: var(--lamp-glow);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@utility vignette {
+  box-shadow: inset 0 0 220px 60px oklch(0 0 0 / 0.72);
+}
+
+@keyframes drift-up {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--dust-opacity, 0.5);
+  }
+  100% {
+    transform: translate3d(var(--dx, 14px), -140px, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes rain-fall {
+  from {
+    transform: translateY(-24px);
+  }
+  to {
+    transform: translateY(220px);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes spin-record {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  47% {
+    opacity: 0.94;
+  }
+  52% {
+    opacity: 0.99;
+  }
+}
+
+@keyframes book-open {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.94) rotateX(9deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0);
+  }
+}
+
+@keyframes drawer-out {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scaleY(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes soft-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes book-slot-in {
+  0% {
+    transform: translateY(-30px) rotate(6deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(2px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes needle-sway {
+  0%,
+  100% {
+    transform: rotate(16deg);
+  }
+  50% {
+    transform: rotate(19deg);
+  }
+}
+
+@utility animate-book-open {
+  animation: book-open 0.5s cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+@utility animate-drawer-out {
+  animation: drawer-out 0.32s ease-out both;
+  transform-origin: top center;
+}
+
+@utility animate-soft-in {
+  animation: soft-in 0.45s ease-out both;
+}
+
+@utility animate-slot-in {
+  animation: book-slot-in 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+
+@utility animate-flicker {
+  animation: flicker 6s ease-in-out infinite;
+}
