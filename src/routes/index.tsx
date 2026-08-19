@@ -138,14 +138,6 @@ function Index() {
   const updateSong = (s: Song) =>
     setData((d) => ({ ...d, songs: d.songs.map((x) => (x.id === s.id ? s : x)) }));
 
-  const addSong = (s: Song) => {
-    setData((d) => ({ ...d, songs: [...d.songs, s] }));
-    setPanel({ kind: "none" });
-    setNewSongId(s.id);
-    say(`“${s.title}” shelved.`);
-    setTimeout(() => setNewSongId(null), 1200);
-  };
-
   const removeSong = (id: string) => {
     setData((d) => ({ ...d, songs: d.songs.filter((s) => s.id !== id) }));
     setPanel({ kind: "none" });
