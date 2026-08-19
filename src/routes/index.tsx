@@ -719,14 +719,14 @@ function FramedPrint({ onPeek }: { onPeek: (s: string) => void }) {
     >
       <span className="relative block h-16 w-20 overflow-hidden">
         <img
-          src={pressedLeafAsset.url}
+          src={pressedLeaf}
           alt="pressed leaf"
-          className="absolute inset-0 h-full w-full object-cover opacity-75"
-          style={{ filter: "sepia(0.35) saturate(0.65) contrast(0.92)" }}
+          className="absolute inset-0 h-full w-full object-contain p-1 opacity-80"
+          style={{ filter: "sepia(0.4) saturate(0.6) contrast(0.92)" }}
         />
         <span
-          className="absolute inset-0"
-          style={{ background: "radial-gradient(circle_at_50%_60%,oklch(0.52_0.055_140/0.18),transparent_62%)" }}
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(circle at 50% 60%, oklch(0.52 0.055 140 / 0.14), transparent 65%)" }}
         />
       </span>
     </button>
