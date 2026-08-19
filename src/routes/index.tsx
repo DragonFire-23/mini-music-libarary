@@ -13,8 +13,8 @@ import { WindowPane, nextWeather } from "@/components/library/WindowPane";
 import { Shelf } from "@/components/library/Shelf";
 import { SongBook } from "@/components/library/SongBook";
 import { CollectionPanel } from "@/components/library/CollectionPanel";
-import { CatalogCard } from "@/components/library/CatalogCard";
 import { CatalogDrawer } from "@/components/library/CatalogDrawer";
+import { IntakeDrop } from "@/components/library/IntakeDrop";
 import { DeskNotes } from "@/components/library/DeskNotes";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
@@ -44,7 +44,7 @@ type PanelState =
   | { kind: "none" }
   | { kind: "song"; id: string }
   | { kind: "collection"; id: string }
-  | { kind: "add" }
+  | { kind: "intake" }
   | { kind: "notes" };
 
 function Index() {
@@ -137,14 +137,6 @@ function Index() {
 
   const updateSong = (s: Song) =>
     setData((d) => ({ ...d, songs: d.songs.map((x) => (x.id === s.id ? s : x)) }));
-
-  const addSong = (s: Song) => {
-    setData((d) => ({ ...d, songs: [...d.songs, s] }));
-    setPanel({ kind: "none" });
-    setNewSongId(s.id);
-    say(`“${s.title}” shelved.`);
-    setTimeout(() => setNewSongId(null), 1200);
-  };
 
   const removeSong = (id: string) => {
     setData((d) => ({ ...d, songs: d.songs.filter((s) => s.id !== id) }));
@@ -246,7 +238,7 @@ function Index() {
           {/* the dim corner */}
           <div className="relative mt-8 lg:pl-14">
             <p className="hand mb-1 pl-4 text-sm text-parchment-dim/45">
-              …tucked behind the reading chair
+              …the reading chair corner — new music waits here until it is shelved
             </p>
             <div
               className="rounded-[3px] p-2"
@@ -308,7 +300,7 @@ function Index() {
           </div>
 
           <div className="flex items-end justify-start gap-8 pl-2">
-            <BookStack />
+            <BookStack onClick={() => setPanel({ kind: "intake" })} />
             <Candle onPeek={say} />
             <span className="hand max-w-[15rem] text-sm leading-snug text-parchment-dim/40">
               {weekly > 0
@@ -393,12 +385,18 @@ function Index() {
                   style={{ clipPath: "polygon(0 0,100% 0,86% 100%,10% 100%)" }}
                 />
                 <div
-                  className="pointer-events-none flex-1"
+                  className="flex flex-1 items-start justify-center pt-2"
                   style={{
                     backgroundImage:
                       "linear-gradient(to bottom, oklch(0 0 0/0.62), oklch(0 0 0/0.15))",
                   }}
-                />
+                >
+                  <CatalogDrawer
+                    songs={data.songs}
+                    collections={data.collections}
+                    onOpenSong={(s) => setPanel({ kind: "song", id: s.id })}
+                  />
+                </div>
                 <div
                   className="w-6 wood-deep-surface"
                   style={{ clipPath: "polygon(0 0,100% 0,90% 100%,14% 100%)" }}
@@ -407,23 +405,7 @@ function Index() {
             </div>
 
 
-            <div className="mt-5 flex flex-wrap items-center gap-4">
-              <CatalogDrawer
-                songs={data.songs}
-                collections={data.collections}
-                onOpenSong={(s) => setPanel({ kind: "song", id: s.id })}
-              />
-              <button
-                type="button"
-                onClick={() => setPanel({ kind: "add" })}
-                className="hand cursor-pointer rounded-[2px] border border-amber/40 px-4 py-2 text-lg text-amber/90 transition-colors hover:bg-amber/10"
-              >
-                add a book to the library
-              </button>
-            </div>
           </div>
-
-          <Chair />
         </section>
       </div>
 
@@ -516,10 +498,14 @@ function Index() {
           );
         })()}
 
-      {panel.kind === "add" && (
-        <CatalogCard
-          collections={data.collections}
-          onAdd={addSong}
+      {panel.kind === "intake" && (
+        <IntakeDrop
+          onAdd={(s) => {
+            setData((d) => ({ ...d, songs: [...d.songs, s] }));
+            setNewSongId(s.id);
+            say(`“${s.title}” set down in the corner.`);
+            setTimeout(() => setNewSongId(null), 1200);
+          }}
           onClose={() => setPanel({ kind: "none" })}
         />
       )}
@@ -716,27 +702,6 @@ function OpenBook() {
   );
 }
 
-function Chair() {
-  return (
-    <div className="pointer-events-none relative -mt-2 hidden h-28 justify-start lg:flex" aria-hidden>
-      <div className="relative ml-4 w-40">
-        <div
-          className="h-16 w-40 rounded-t-[26px]"
-          style={{ background: "linear-gradient(180deg, oklch(0.34 0.05 42), oklch(0.24 0.035 40))" }}
-        />
-        <div
-          className="-mt-1 h-8 w-44 rounded-[10px]"
-          style={{ background: "linear-gradient(180deg, oklch(0.3 0.045 42), oklch(0.2 0.03 40))" }}
-        />
-        <div className="mx-4 flex justify-between">
-          <span className="block h-6 w-2 bg-wood-light/80" />
-          <span className="block h-6 w-2 bg-wood-light/80" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function FramedPrint({ onPeek }: { onPeek: (s: string) => void }) {
   return (
     <button
@@ -755,7 +720,7 @@ function FramedPrint({ onPeek }: { onPeek: (s: string) => void }) {
   );
 }
 
-function BookStack() {
+function BookStack({ onClick }: { onClick: () => void }) {
   const rows = [
     { w: 96, h: 12, c: "oklch(0.42 0.11 45)", r: -1.5 },
     { w: 88, h: 10, c: "oklch(0.36 0.06 150)", r: 1.2 },
@@ -763,7 +728,12 @@ function BookStack() {
     { w: 82, h: 9, c: "oklch(0.33 0.05 250)", r: 2 },
   ];
   return (
-    <div className="flex flex-col items-center" title="a stack someone never reshelved">
+    <button
+      type="button"
+      onClick={onClick}
+      title="a stack someone never reshelved — bring in new music"
+      className="group flex cursor-pointer flex-col items-center transition-transform duration-300 hover:-translate-y-0.5"
+    >
       {rows.map((r, i) => (
         <span
           key={i}
@@ -777,7 +747,10 @@ function BookStack() {
           }}
         />
       ))}
-    </div>
+      <span className="hand mt-1 text-xs text-parchment-dim/0 transition-colors group-hover:text-parchment-dim/60">
+        drop new music
+      </span>
+    </button>
   );
 }
 
