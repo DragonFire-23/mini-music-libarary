@@ -718,36 +718,16 @@ function FramedPrint({ onPeek }: { onPeek: (s: string) => void }) {
       }}
     >
       <span className="relative block h-16 w-20 overflow-hidden">
+        <img
+          src={pressedLeafAsset.url}
+          alt="pressed leaf"
+          className="absolute inset-0 h-full w-full object-cover opacity-75"
+          style={{ filter: "sepia(0.35) saturate(0.65) contrast(0.92)" }}
+        />
         <span
           className="absolute inset-0"
-          style={{ background: "radial-gradient(circle_at_50%_60%,oklch(0.52_0.055_140/0.2),transparent_62%)" }}
+          style={{ background: "radial-gradient(circle_at_50%_60%,oklch(0.52_0.055_140/0.18),transparent_62%)" }}
         />
-        <svg
-          viewBox="0 0 48 40"
-          className="absolute inset-0 h-full w-full"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M24 34c-2-6-8-10-14-12 6-2 12-6 14-12 2 6 8 10 14 12-6 2-12 6-14 12Z"
-            fill="oklch(0.52 0.09 140 / 0.55)"
-            stroke="oklch(0.35 0.06 130 / 0.45)"
-            strokeWidth="0.8"
-          />
-          <path
-            d="M24 34V18"
-            stroke="oklch(0.35 0.06 130 / 0.5)"
-            strokeWidth="0.8"
-            strokeLinecap="round"
-          />
-          <path
-            d="M24 25c-4-2-7-5-9-8M24 26c4-2 7-5 9-8"
-            stroke="oklch(0.35 0.06 130 / 0.35)"
-            strokeWidth="0.5"
-            strokeLinecap="round"
-          />
-        </svg>
       </span>
     </button>
   );
