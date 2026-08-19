@@ -19,6 +19,8 @@ import { DeskNotes } from "@/components/library/DeskNotes";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
+import pressedLeafAsset from "@/assets/pressed-leaf.png.asset.json";
+
 
 
 export const Route = createFileRoute("/")({
