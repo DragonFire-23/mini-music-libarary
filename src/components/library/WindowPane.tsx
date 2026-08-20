@@ -27,10 +27,10 @@ export function WindowPane({
   const stars = useMemo(
     () =>
       Array.from({ length: 26 }, (_, i) => ({
-        left: ((i * 53) % 96) + 2,
-        top: 58 + ((i * 29) % 34), // keep stars in the lower half of the pane
+        left: 8 + ((i * 53) % 84), // keep well inside the side borders
+        top: 38 + ((i * 29) % 48), // keep below the rounded top and inside the frame
         delay: (i % 9) * 0.7,
-        s: i % 5 === 0 ? 2.4 : 1.4,
+        s: i % 5 === 0 ? 2.2 : 1.3,
       })),
     [],
   );
