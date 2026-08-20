@@ -28,7 +28,7 @@ export function WindowPane({
     () =>
       Array.from({ length: 26 }, (_, i) => ({
         left: ((i * 53) % 96) + 2,
-        top: ((i * 29) % 80) + 4,
+        top: 58 + ((i * 29) % 34), // keep stars in the lower half of the pane
         delay: (i % 9) * 0.7,
         s: i % 5 === 0 ? 2.4 : 1.4,
       })),
