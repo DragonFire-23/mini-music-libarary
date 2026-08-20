@@ -211,6 +211,16 @@ function Index() {
             style={{ boxShadow: "var(--shadow-shelf)" }}
           >
             <div className="max-h-[62vh] space-y-0 overflow-y-auto pr-1 lg:max-h-[64vh]">
+              {special.map((c) => (
+                <Shelf
+                  key={c.id}
+                  collection={c}
+                  songs={songsFor(c.id)}
+                  newSongId={newSongId}
+                  onOpenCollection={() => setPanel({ kind: "collection", id: c.id })}
+                  onOpenSong={(s) => setPanel({ kind: "song", id: s.id })}
+                />
+              ))}
               {ordinary.map((c) => (
                 <Shelf
                   key={c.id}
@@ -235,31 +245,6 @@ function Index() {
               <div className="pointer-events-none absolute -right-16 top-1/3 h-72 w-72 lamp-pool opacity-50" />
             )}
             <Dust count={18} opacity={lamp ? 0.4 : 0.16} />
-          </div>
-
-          {/* the dim corner */}
-          <div className="relative mt-8 lg:pl-14">
-            <p className="hand mb-1 pl-4 text-sm text-parchment-dim/45">
-              …the reading chair corner — new music waits here until it is shelved
-            </p>
-            <div
-              className="rounded-[3px] p-2"
-              style={{
-                background: "linear-gradient(180deg, oklch(0.16 0.02 50), oklch(0.11 0.015 48))",
-                boxShadow: "inset 0 0 40px oklch(0 0 0/0.8)",
-              }}
-            >
-              {special.map((c) => (
-                <Shelf
-                  key={c.id}
-                  collection={c}
-                  songs={songsFor(c.id)}
-                  newSongId={newSongId}
-                  onOpenCollection={() => setPanel({ kind: "collection", id: c.id })}
-                  onOpenSong={(s) => setPanel({ kind: "song", id: s.id })}
-                />
-              ))}
-            </div>
           </div>
         </section>
 
