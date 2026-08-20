@@ -659,19 +659,61 @@ function Cup() {
 function Plant() {
   return (
     <div className="relative" title="a small plant">
-      <div className="flex items-end justify-center gap-[3px]">
-        {[16, 26, 20, 30, 18].map((h, i) => (
+      <div className="flex items-end justify-center gap-[2px]">
+        {/* central stem */}
+        <div
+          className="absolute bottom-0 w-[3px] rounded-full bg-moss/40"
+          style={{ height: 34, transform: "translateY(-6px)" }}
+        />
+        {[
+          { h: 18, w: 7, r: -22, o: 0.75 },
+          { h: 26, w: 8, r: -14, o: 0.9 },
+          { h: 22, w: 7, r: -6, o: 0.8 },
+          { h: 34, w: 9, r: 0, o: 1 },
+          { h: 24, w: 7, r: 8, o: 0.85 },
+          { h: 30, w: 8, r: 16, o: 0.92 },
+          { h: 17, w: 6, r: 24, o: 0.7 },
+        ].map((leaf, i) => (
           <span
             key={i}
-            className="block w-[6px] rounded-t-full bg-moss/80"
-            style={{ height: h, transform: `rotate(${(i - 2) * 8}deg)`, transformOrigin: "bottom center" }}
+            className="block rounded-t-full bg-moss/80"
+            style={{
+              height: leaf.h,
+              width: leaf.w,
+              opacity: leaf.o,
+              transform: `rotate(${leaf.r}deg)`,
+              transformOrigin: "bottom center",
+            }}
           />
         ))}
       </div>
+      {/* soil line */}
       <div
-        className="h-9 w-14 rounded-b-[8px]"
-        style={{ background: "linear-gradient(180deg, oklch(0.44 0.07 45), oklch(0.32 0.05 42))" }}
+        className="absolute -top-2 left-1/2 z-10 h-[3px] w-10 -translate-x-1/2 rounded-full"
+        style={{ background: "oklch(0.22 0.03 45)" }}
       />
+      <div
+        className="relative h-10 w-14 rounded-b-[8px]"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.44 0.07 45) 0%, oklch(0.38 0.06 43) 60%, oklch(0.32 0.05 42) 100%)",
+          boxShadow: "inset 0 2px 0 oklch(1 0 0/0.08), 0 6px 10px -4px oklch(0 0 0/0.55)",
+        }}
+      >
+        {/* pot rim band */}
+        <div
+          className="absolute top-0 left-1/2 h-3 w-[120%] -translate-x-1/2 rounded-[3px]"
+          style={{
+            background: "linear-gradient(180deg, oklch(0.48 0.075 45), oklch(0.4 0.065 43))",
+            boxShadow: "inset 0 1px 0 oklch(1 0 0/0.1), 0 2px 3px oklch(0 0 0/0.25)",
+          }}
+        />
+        {/* pot highlight */}
+        <div
+          className="pointer-events-none absolute top-4 left-2 h-5 w-[3px] rounded-full opacity-20"
+          style={{ background: "oklch(1 0 0/0.35)" }}
+        />
+      </div>
     </div>
   );
 }
