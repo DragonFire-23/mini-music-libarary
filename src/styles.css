@@ -169,10 +169,10 @@
 
 @keyframes rain-fall {
   from {
-    transform: translateY(-24px);
+    transform: translateY(-20px);
   }
   to {
-    transform: translateY(220px);
+    transform: translateY(calc(100% + 20px));
   }
 }
 

@@ -62,14 +62,18 @@ export function WindowPane({
             drops.map((d, i) => (
               <span
                 key={i}
-                className="absolute w-px bg-parchment/35"
+                className="pointer-events-none absolute top-0 w-px"
                 style={{
                   left: `${d.left}%`,
-                  height: d.h,
-                  top: -20,
+                  height: "100%",
                   animation: `rain-fall ${d.dur}s linear ${d.delay}s infinite`,
                 }}
-              />
+              >
+                <span
+                  className="block w-px bg-parchment/35"
+                  style={{ height: d.h }}
+                />
+              </span>
             ))}
 
           {weather === "stars" &&
