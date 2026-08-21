@@ -16,6 +16,7 @@ import { CollectionPanel } from "@/components/library/CollectionPanel";
 import { CatalogDrawer } from "@/components/library/CatalogDrawer";
 import { IntakeDrop } from "@/components/library/IntakeDrop";
 import { DeskNotes } from "@/components/library/DeskNotes";
+import { DeskConverter } from "@/components/library/DeskConverter";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
