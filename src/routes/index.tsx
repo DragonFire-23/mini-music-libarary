@@ -499,6 +499,19 @@ function Index() {
         />
       )}
 
+      {panel.kind === "convert" && (
+        <DeskConverter
+          onAdd={(s) => {
+            setData((d) => ({ ...d, songs: [...d.songs, s] }));
+            setNewSongId(s.id);
+            say(`“${s.title}” pulled down and shelved.`);
+            setTimeout(() => setNewSongId(null), 1200);
+          }}
+          onOpenNotes={() => setPanel({ kind: "notes" })}
+          onClose={() => setPanel({ kind: "none" })}
+        />
+      )}
+
       {panel.kind === "notes" && (
         <DeskNotes
           songs={data.songs}
