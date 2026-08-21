@@ -40,6 +40,7 @@ export type Prefs = {
   rainVolume?: number;
   rainMuted?: boolean;
   musicVolume?: number;
+  journal?: Record<string, string>;
 };
 
 const KEY = "little-music-library-v2";
