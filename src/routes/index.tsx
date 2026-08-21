@@ -47,6 +47,7 @@ type PanelState =
   | { kind: "song"; id: string }
   | { kind: "collection"; id: string }
   | { kind: "intake" }
+  | { kind: "convert" }
   | { kind: "notes" };
 
 function Index() {
