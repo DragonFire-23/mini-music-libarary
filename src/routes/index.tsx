@@ -16,7 +16,6 @@ import { CollectionPanel } from "@/components/library/CollectionPanel";
 import { CatalogDrawer } from "@/components/library/CatalogDrawer";
 import { IntakeDrop } from "@/components/library/IntakeDrop";
 import { DeskNotes } from "@/components/library/DeskNotes";
-import { DeskConverter } from "@/components/library/DeskConverter";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
@@ -48,7 +47,6 @@ type PanelState =
   | { kind: "song"; id: string }
   | { kind: "collection"; id: string }
   | { kind: "intake" }
-  | { kind: "convert" }
   | { kind: "notes" };
 
 function Index() {
@@ -335,7 +333,7 @@ function Index() {
               {/* the top, tilted away from the viewer */}
               <button
                 type="button"
-                onClick={() => setPanel({ kind: "convert" })}
+                onClick={() => setPanel({ kind: "notes" })}
                 className="group relative block w-full cursor-pointer wood-surface px-6 py-6 text-left [transform:rotateX(46deg)] [transform-origin:bottom_center] [transform-style:preserve-3d]"
                 style={{
                   boxShadow: "0 30px 60px -20px oklch(0 0 0/0.95), inset 0 2px 0 oklch(1 0 0/0.07)",
@@ -495,19 +493,6 @@ function Index() {
             say(`“${s.title}” set down in the corner.`);
             setTimeout(() => setNewSongId(null), 1200);
           }}
-          onClose={() => setPanel({ kind: "none" })}
-        />
-      )}
-
-      {panel.kind === "convert" && (
-        <DeskConverter
-          onAdd={(s) => {
-            setData((d) => ({ ...d, songs: [...d.songs, s] }));
-            setNewSongId(s.id);
-            say(`“${s.title}” pulled down and shelved.`);
-            setTimeout(() => setNewSongId(null), 1200);
-          }}
-          onOpenNotes={() => setPanel({ kind: "notes" })}
           onClose={() => setPanel({ kind: "none" })}
         />
       )}
