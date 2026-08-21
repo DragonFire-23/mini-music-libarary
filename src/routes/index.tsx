@@ -334,7 +334,7 @@ function Index() {
               {/* the top, tilted away from the viewer */}
               <button
                 type="button"
-                onClick={() => setPanel({ kind: "notes" })}
+                onClick={() => setPanel({ kind: "convert" })}
                 className="group relative block w-full cursor-pointer wood-surface px-6 py-6 text-left [transform:rotateX(46deg)] [transform-origin:bottom_center] [transform-style:preserve-3d]"
                 style={{
                   boxShadow: "0 30px 60px -20px oklch(0 0 0/0.95), inset 0 2px 0 oklch(1 0 0/0.07)",
