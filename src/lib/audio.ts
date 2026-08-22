@@ -189,7 +189,6 @@ export class RainAmbience {
   }
 
   start(volume = 0.13, url?: string) {
-    console.log("RAIN-START url=", url);
     this.stop();
     const Ctx =
       (window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext })
