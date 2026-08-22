@@ -331,9 +331,13 @@ function Index() {
             {/* desk — built in perspective: receding top, front edge, legs */}
             <div className="relative [perspective:900px] [perspective-origin:50%_0%]">
               {/* the top, tilted away from the viewer */}
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => setPanel({ kind: "notes" })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") setPanel({ kind: "notes" });
+                }}
                 className="group relative block w-full cursor-pointer wood-surface px-6 py-6 text-left [transform:rotateX(46deg)] [transform-origin:bottom_center] [transform-style:preserve-3d]"
                 style={{
                   boxShadow: "0 30px 60px -20px oklch(0 0 0/0.95), inset 0 2px 0 oklch(1 0 0/0.07)",
