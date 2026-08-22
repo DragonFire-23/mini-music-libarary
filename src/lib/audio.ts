@@ -304,19 +304,6 @@ export class RainAmbience {
     this.ctx = null;
     this.master = null;
   }
-
-  setVolume(v: number) {
-    const ctx = this.ctx;
-    const master = this.master;
-    if (!ctx || !master) return;
-    try {
-      master.gain.cancelScheduledValues(ctx.currentTime);
-      master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
-      master.gain.linearRampToValueAtTime(Math.max(0.0001, v), ctx.currentTime + 0.4);
-    } catch {
-      /* ignore */
-    }
-  }
 }
 
 // ————————————————————————————————————————————————
