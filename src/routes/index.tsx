@@ -75,7 +75,7 @@ function Index() {
   const [gestured, setGestured] = useState(false);
   useEffect(() => {
     if (gestured) return;
-    const on = () => setGestured(true);
+    const on = () => { console.log("GESTURE-FIRED"); setGestured(true); };
     window.addEventListener("pointerdown", on, { once: true });
     window.addEventListener("keydown", on, { once: true });
     return () => {
