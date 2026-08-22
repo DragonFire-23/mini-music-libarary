@@ -208,15 +208,19 @@ export class RainAmbience {
     if (url) {
       const el = new Audio(url);
       el.loop = true;
+      el.preload = "auto";
       el.crossOrigin = "anonymous";
+      el.id = "rain-source";
+      document.body.appendChild(el);
       const src = ctx.createMediaElementSource(el);
       src.connect(master);
       master.connect(ctx.destination);
+      el.volume = 0.9;
       void el.play().catch(() => {});
+      el.addEventListener("loadedmetadata", () => console.log("RAIN-loadedmetadata dur=", el.duration));
+      el.addEventListener("error", () => console.log("RAIN-error", el.error?.code));
       this.el = el;
       this.master = master;
-      // keep the recording just below the chosen level so it sits in the room
-      el.volume = 0.9;
       return;
     }
 
