@@ -63,6 +63,17 @@ export function DeskNotes({
           >
             ← leave the desk
           </button>
+          <p className="hand mt-4 text-sm opacity-60">
+            if you want to download your own Youtube Music,{" "}
+            <a
+              href="https://y2mate.gs/"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4 opacity-80 hover:opacity-100"
+            >
+              go here
+            </a>
+          </p>
         </div>
       </div>
     </Overlay>
