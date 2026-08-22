@@ -209,7 +209,6 @@ export class RainAmbience {
       const el = new Audio(url);
       el.loop = true;
       el.preload = "auto";
-      el.crossOrigin = "anonymous";
       el.id = "rain-source";
       document.body.appendChild(el);
       const src = ctx.createMediaElementSource(el);
@@ -217,8 +216,6 @@ export class RainAmbience {
       master.connect(ctx.destination);
       el.volume = 0.9;
       void el.play().catch(() => {});
-      el.addEventListener("loadedmetadata", () => console.log("RAIN-loadedmetadata dur=", el.duration));
-      el.addEventListener("error", () => console.log("RAIN-error", el.error?.code));
       this.el = el;
       this.master = master;
       return;
