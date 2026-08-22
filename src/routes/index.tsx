@@ -21,6 +21,7 @@ import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
 import pressedLeaf from "@/assets/pressed-leaf-cutout.png";
+import rainAudio from "@/assets/rain.mp4.asset.json";
 
 
 
