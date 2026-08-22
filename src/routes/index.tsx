@@ -21,6 +21,7 @@ import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
 import pressedLeaf from "@/assets/pressed-leaf-cutout.png";
+import rainAudio from "@/assets/rain.webm.asset.json";
 
 
 
@@ -94,7 +95,7 @@ function Index() {
     if (!gestured || data.prefs.weather !== "rain") return;
     const rain = new RainAmbience();
     rainRef.current = rain;
-    rain.start(rainLevelRef.current);
+    rain.start(rainLevelRef.current, rainAudio.url);
     return () => {
       rain.stop();
       rainRef.current = null;
@@ -750,10 +751,28 @@ function Papers({ onClick }: { onClick: (e: React.MouseEvent) => void }) {
 
 function OpenBook() {
   return (
-    <div className="relative h-14 w-28" style={{ transform: "rotate(1.5deg)" }}>
+    <div
+      className="relative h-14 w-28"
+      style={{ transform: "rotate(1.5deg)" }}
+    >
+      {/* leather cover with visible binding */}
+      <span
+        className="absolute -inset-x-0.5 -inset-y-0.5 rounded-[2px]"
+        style={{
+          background: "linear-gradient(180deg, oklch(0.31 0.09 25), oklch(0.2 0.07 22) 55%, oklch(0.27 0.08 26))",
+          boxShadow: "0 6px 12px -4px oklch(0 0 0/0.8), inset 0 1px 0 oklch(1 0 0/0.12)",
+          border: "1px solid oklch(0.14 0.05 18)",
+        }}
+      />
+      {/* gold tooling frame on the cover */}
+      <span className="absolute inset-0 rounded-[1px] border border-amber/25" />
+      {/* left page */}
       <span className="absolute inset-y-0 left-0 w-1/2 rounded-l-[2px] paper-surface" />
+      {/* right page */}
       <span className="absolute inset-y-0 right-0 w-1/2 rounded-r-[2px] paper-surface" />
+      {/* spine crease */}
       <span className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 bg-ink/30" />
+      {/* bookmark ribbon */}
       <span className="absolute -top-2 right-6 h-6 w-1.5 rounded-b bg-destructive/70" />
     </div>
   );

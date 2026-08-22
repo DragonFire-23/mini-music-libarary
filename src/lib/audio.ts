@@ -167,10 +167,11 @@ export class MusicBox {
 }
 
 // ————————————————————————————————————————————————
-// Rain on the window: filtered noise + occasional gusts.
+// Rain on the window: the real recording, looped, through a shared master gain.
 export class RainAmbience {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
+  private el: HTMLAudioElement | null = null;
   private nodes: AudioScheduledSourceNode[] = [];
   private gustTimer: number | null = null;
 
@@ -187,7 +188,7 @@ export class RainAmbience {
     }
   }
 
-  start(volume = 0.13) {
+  start(volume = 0.13, url?: string) {
     this.stop();
     const Ctx =
       (window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext })
@@ -198,7 +199,28 @@ export class RainAmbience {
     void ctx.resume();
     this.ctx = ctx;
 
-    // 3 seconds of pink-ish noise, looped
+    const master = ctx.createGain();
+    master.gain.value = 0;
+    master.gain.linearRampToValueAtTime(Math.max(0.0001, volume), ctx.currentTime + 2);
+
+    // A real rain recording, looped and routed through the same master gain.
+    if (url) {
+      const el = new Audio(url);
+      el.loop = true;
+      el.preload = "auto";
+      el.id = "rain-source";
+      document.body.appendChild(el);
+      const src = ctx.createMediaElementSource(el);
+      src.connect(master);
+      master.connect(ctx.destination);
+      el.volume = 0.9;
+      void el.play().catch(() => {});
+      this.el = el;
+      this.master = master;
+      return;
+    }
+
+    // Fallback: 3 seconds of pink-ish noise, looped
     const len = ctx.sampleRate * 3;
     const buf = ctx.createBuffer(1, len, ctx.sampleRate);
     const d = buf.getChannelData(0);
@@ -223,10 +245,6 @@ export class RainAmbience {
     const lp = ctx.createBiquadFilter();
     lp.type = "lowpass";
     lp.frequency.value = 5200;
-
-    const master = ctx.createGain();
-    master.gain.value = 0;
-    master.gain.linearRampToValueAtTime(Math.max(0.0001, volume), ctx.currentTime + 2);
 
     src.connect(hp);
     hp.connect(lp);
@@ -254,6 +272,15 @@ export class RainAmbience {
       window.clearTimeout(this.gustTimer);
       this.gustTimer = null;
     }
+    if (this.el) {
+      try {
+        this.el.pause();
+        this.el.src = "";
+      } catch {
+        /* ignore */
+      }
+      this.el = null;
+    }
     const ctx = this.ctx;
     const master = this.master;
     if (ctx && master) {
@@ -279,6 +306,9 @@ export class RainAmbience {
     this.master = null;
   }
 }
+
+// ————————————————————————————————————————————————
+// The mantel clock: a soft wooden tick every second.
 
 // ————————————————————————————————————————————————
 // The mantel clock: a soft wooden tick every second.
