@@ -517,6 +517,14 @@ function Index() {
           onClose={() => setPanel({ kind: "none" })}
         />
       )}
+
+      {panel.kind === "journal" && (
+        <DayJournal
+          entries={data.prefs.journal ?? {}}
+          onChange={(journal) => setData((d) => ({ ...d, prefs: { ...d.prefs, journal } }))}
+          onClose={() => setPanel({ kind: "none" })}
+        />
+      )}
     </main>
   );
 }
@@ -714,9 +722,15 @@ function Plant() {
   );
 }
 
-function Papers() {
+function Papers({ onClick }: { onClick: (e: React.MouseEvent) => void }) {
+  const today = new Date();
   return (
-    <div className="relative h-16 w-24">
+    <button
+      type="button"
+      onClick={onClick}
+      title="the day book"
+      className="group/papers relative block h-16 w-24 cursor-pointer transition-transform duration-300 hover:-translate-y-1"
+    >
       {[-4, 1.5, -1].map((r, i) => (
         <span
           key={i}
@@ -724,10 +738,13 @@ function Papers() {
           style={{ transform: `rotate(${r}deg) translate(${i * 3}px, ${i * -2}px)` }}
         />
       ))}
-      <span className="hand absolute inset-0 flex items-center justify-center text-sm text-ink/60">
-        notes
+      <span className="absolute inset-0 flex flex-col items-center justify-center leading-none">
+        <span className="plate-type text-[9px] uppercase tracking-[0.18em] text-ink/55">
+          {today.toLocaleDateString(undefined, { month: "short" })}
+        </span>
+        <span className="plate-type text-xl text-ink/75">{today.getDate()}</span>
       </span>
-    </div>
+    </button>
   );
 }
 
