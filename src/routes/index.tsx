@@ -16,6 +16,7 @@ import { CollectionPanel } from "@/components/library/CollectionPanel";
 import { CatalogDrawer } from "@/components/library/CatalogDrawer";
 import { IntakeDrop } from "@/components/library/IntakeDrop";
 import { DeskNotes } from "@/components/library/DeskNotes";
+import { DayJournal } from "@/components/library/DayJournal";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
@@ -47,7 +48,8 @@ type PanelState =
   | { kind: "song"; id: string }
   | { kind: "collection"; id: string }
   | { kind: "intake" }
-  | { kind: "notes" };
+  | { kind: "notes" }
+  | { kind: "journal" };
 
 function Index() {
   const [data, setData] = useState<LibraryData>(() => ({
@@ -351,14 +353,19 @@ function Index() {
                   }}
                 />
                 <div className="relative flex items-end gap-4 [transform:rotateX(-46deg)] [transform-origin:bottom_center]">
-                  <Papers />
+                  <Papers
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPanel({ kind: "journal" });
+                    }}
+                  />
                   <OpenBook />
                   <Cup />
                   <span className="hand ml-auto pb-1 text-sm text-parchment-dim/45 transition-colors group-hover:text-parchment/80">
                     open the desk
                   </span>
                 </div>
-              </button>
+              </div>
 
               {/* front edge of the desktop */}
               <div
