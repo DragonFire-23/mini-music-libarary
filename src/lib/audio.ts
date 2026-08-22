@@ -321,6 +321,9 @@ export class RainAmbience {
 
 // ————————————————————————————————————————————————
 // The mantel clock: a soft wooden tick every second.
+
+// ————————————————————————————————————————————————
+// The mantel clock: a soft wooden tick every second.
 export class ClockTick {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
