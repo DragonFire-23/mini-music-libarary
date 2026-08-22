@@ -95,7 +95,7 @@ function Index() {
     if (!gestured || data.prefs.weather !== "rain") return;
     const rain = new RainAmbience();
     rainRef.current = rain;
-    rain.start(rainLevelRef.current);
+    rain.start(rainLevelRef.current, rainAudio.url);
     return () => {
       rain.stop();
       rainRef.current = null;
