@@ -44,13 +44,21 @@ export function SongBook({
   return (
     <Overlay onClose={onClose}>
       <div className="animate-book-open relative mx-auto w-full max-w-4xl [perspective:1600px]">
+        {/* leather cover binding */}
         <div
-          className="grid grid-cols-1 gap-0 rounded-[3px] md:grid-cols-2"
+          className="relative rounded-[3px] p-2 md:p-3"
           style={{
-            boxShadow: "0 40px 70px -30px oklch(0 0 0/0.9)",
+            background:
+              "linear-gradient(180deg, oklch(0.31 0.09 25), oklch(0.2 0.07 22) 50%, oklch(0.27 0.08 26))",
+            boxShadow:
+              "0 45px 80px -30px oklch(0 0 0/0.95), inset 0 1px 0 oklch(1 0 0/0.12), inset 0 -2px 6px oklch(0 0 0/0.5)",
+            border: "1px solid oklch(0.14 0.05 18)",
           }}
         >
-          {/* left page */}
+          {/* gold tooling frame */}
+          <div className="pointer-events-none absolute inset-1.5 rounded-[1px] border border-amber/25" />
+          <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-[2px] md:grid-cols-2">
+            {/* left page */}
           <div className="paper-surface relative rounded-l-[3px] p-8">
             <p className="hand text-sm opacity-60">
               added {new Date(draft.dateAdded).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}
