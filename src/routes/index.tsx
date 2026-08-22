@@ -16,6 +16,7 @@ import { CollectionPanel } from "@/components/library/CollectionPanel";
 import { CatalogDrawer } from "@/components/library/CatalogDrawer";
 import { IntakeDrop } from "@/components/library/IntakeDrop";
 import { DeskNotes } from "@/components/library/DeskNotes";
+import { DayJournal } from "@/components/library/DayJournal";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
@@ -47,7 +48,8 @@ type PanelState =
   | { kind: "song"; id: string }
   | { kind: "collection"; id: string }
   | { kind: "intake" }
-  | { kind: "notes" };
+  | { kind: "notes" }
+  | { kind: "journal" };
 
 function Index() {
   const [data, setData] = useState<LibraryData>(() => ({
@@ -331,9 +333,13 @@ function Index() {
             {/* desk — built in perspective: receding top, front edge, legs */}
             <div className="relative [perspective:900px] [perspective-origin:50%_0%]">
               {/* the top, tilted away from the viewer */}
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => setPanel({ kind: "notes" })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") setPanel({ kind: "notes" });
+                }}
                 className="group relative block w-full cursor-pointer wood-surface px-6 py-6 text-left [transform:rotateX(46deg)] [transform-origin:bottom_center] [transform-style:preserve-3d]"
                 style={{
                   boxShadow: "0 30px 60px -20px oklch(0 0 0/0.95), inset 0 2px 0 oklch(1 0 0/0.07)",
@@ -347,14 +353,19 @@ function Index() {
                   }}
                 />
                 <div className="relative flex items-end gap-4 [transform:rotateX(-46deg)] [transform-origin:bottom_center]">
-                  <Papers />
+                  <Papers
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPanel({ kind: "journal" });
+                    }}
+                  />
                   <OpenBook />
                   <Cup />
                   <span className="hand ml-auto pb-1 text-sm text-parchment-dim/45 transition-colors group-hover:text-parchment/80">
                     open the desk
                   </span>
                 </div>
-              </button>
+              </div>
 
               {/* front edge of the desktop */}
               <div
@@ -503,6 +514,14 @@ function Index() {
           value={data.prefs.deskNotes ?? ""}
           onChange={(v) => setData((d) => ({ ...d, prefs: { ...d.prefs, deskNotes: v } }))}
           onOpenSong={(s) => setPanel({ kind: "song", id: s.id })}
+          onClose={() => setPanel({ kind: "none" })}
+        />
+      )}
+
+      {panel.kind === "journal" && (
+        <DayJournal
+          entries={data.prefs.journal ?? {}}
+          onChange={(journal) => setData((d) => ({ ...d, prefs: { ...d.prefs, journal } }))}
           onClose={() => setPanel({ kind: "none" })}
         />
       )}
@@ -703,9 +722,15 @@ function Plant() {
   );
 }
 
-function Papers() {
+function Papers({ onClick }: { onClick: (e: React.MouseEvent) => void }) {
+  const today = new Date();
   return (
-    <div className="relative h-16 w-24">
+    <button
+      type="button"
+      onClick={onClick}
+      title="the day book"
+      className="group/papers relative block h-16 w-24 cursor-pointer transition-transform duration-300 hover:-translate-y-1"
+    >
       {[-4, 1.5, -1].map((r, i) => (
         <span
           key={i}
@@ -713,10 +738,13 @@ function Papers() {
           style={{ transform: `rotate(${r}deg) translate(${i * 3}px, ${i * -2}px)` }}
         />
       ))}
-      <span className="hand absolute inset-0 flex items-center justify-center text-sm text-ink/60">
-        notes
+      <span className="absolute inset-0 flex flex-col items-center justify-center leading-none">
+        <span className="plate-type text-[9px] uppercase tracking-[0.18em] text-ink/55">
+          {today.toLocaleDateString(undefined, { month: "short" })}
+        </span>
+        <span className="plate-type text-xl text-ink/75">{today.getDate()}</span>
       </span>
-    </div>
+    </button>
   );
 }
 
