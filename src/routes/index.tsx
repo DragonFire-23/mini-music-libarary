@@ -289,7 +289,7 @@ function Index() {
             </div>
           </div>
 
-          <div className="flex items-end justify-start gap-8 pl-2">
+          <div className="flex items-end justify-start gap-8 pl-2 -mt-1">
             <BookStack onClick={() => setPanel({ kind: "intake" })} />
             <Candle onPeek={say} />
             <span className="hand max-w-[15rem] text-sm leading-snug text-parchment-dim/40">
