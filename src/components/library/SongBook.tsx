@@ -95,6 +95,17 @@ export function SongBook({
                     listen elsewhere →
                   </a>
                 )}
+                <p className="hand mt-3 text-sm opacity-60">
+                  if you want to download your own Youtube Music,{" "}
+                  <a
+                    href="https://y2mate.gs/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline underline-offset-4 opacity-80 hover:opacity-100"
+                  >
+                    go here
+                  </a>
+                </p>
                 <button
                   type="button"
                   onClick={onPlay}
