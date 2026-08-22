@@ -193,10 +193,10 @@ function Index() {
 
       <h1 className="sr-only">The Little Music Library</h1>
 
-      <div className="relative mx-auto grid max-w-[1500px] grid-cols-1 gap-10 px-6 py-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14 lg:px-12">
+      <div className="relative mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-6 py-6 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:px-12">
         {/* ---------------- left: the bookcase wall ---------------- */}
         <section className="relative">
-          <header className="mb-5 flex items-end justify-between">
+          <header className="mb-3 flex items-end justify-between">
             <div>
               <p className="plate-type text-[11px] uppercase tracking-[0.35em] text-parchment-dim/60">
                 the little
@@ -213,7 +213,7 @@ function Index() {
             className="relative rounded-[3px] wood-deep-surface p-3 pb-4"
             style={{ boxShadow: "var(--shadow-shelf)" }}
           >
-            <div className="max-h-[62vh] space-y-0 overflow-y-auto pr-1 lg:max-h-[64vh]">
+            <div className="max-h-[52vh] space-y-0 overflow-y-auto pr-1 lg:max-h-[56vh]">
               {special.map((c) => (
                 <Shelf
                   key={c.id}
@@ -252,7 +252,7 @@ function Index() {
         </section>
 
         {/* ---------------- right: window, desk, corner ---------------- */}
-        <section className="relative flex flex-col gap-8">
+        <section className="relative flex flex-col gap-5">
           <div className="flex items-start gap-6">
             <div className="w-[46%] max-w-[240px]">
               <WindowPane
@@ -282,7 +282,7 @@ function Index() {
               )}
             </div>
 
-            <div className="flex flex-1 flex-col items-center gap-5 pt-2">
+            <div className="flex flex-1 flex-col items-center gap-4 pt-1">
               <Clock onPeek={say} />
               <Plant />
               <FramedPrint onPeek={say} />
@@ -378,7 +378,7 @@ function Index() {
               />
 
               {/* legs and the shadowed underside */}
-              <div className="relative flex h-20 items-stretch justify-between px-5">
+              <div className="relative flex h-16 items-stretch justify-between px-5">
                 <div
                   className="w-6 wood-deep-surface"
                   style={{ clipPath: "polygon(0 0,100% 0,86% 100%,10% 100%)" }}
