@@ -167,10 +167,11 @@ export class MusicBox {
 }
 
 // ————————————————————————————————————————————————
-// Rain on the window: filtered noise + occasional gusts.
+// Rain on the window: the real recording, looped, through a shared master gain.
 export class RainAmbience {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
+  private el: HTMLAudioElement | null = null;
   private nodes: AudioScheduledSourceNode[] = [];
   private gustTimer: number | null = null;
 
