@@ -63,7 +63,7 @@ export function DeskNotes({
           >
             ← leave the desk
           </button>
-          <p className="hand mt-4 text-sm opacity-60">
+          <p className="hand mt-4 text-2xl opacity-60">
             if you want to download your own Youtube Music,{" "}
             <a
               href="https://y2mate.gs/"
