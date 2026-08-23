@@ -16,6 +16,8 @@ import { CollectionPanel } from "@/components/library/CollectionPanel";
 import { CatalogDrawer } from "@/components/library/CatalogDrawer";
 import { IntakeDrop } from "@/components/library/IntakeDrop";
 import { DeskNotes } from "@/components/library/DeskNotes";
+import { ListeningRoom } from "@/components/library/ListeningRoom";
+
 import { DayJournal } from "@/components/library/DayJournal";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
