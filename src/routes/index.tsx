@@ -193,7 +193,7 @@ function Index() {
 
       <h1 className="sr-only">The Little Music Library</h1>
 
-      <div className="relative mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-6 py-3 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:px-12">
+      <div className="relative mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-6 py-2 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:px-12">
         {/* ---------------- left: the bookcase wall ---------------- */}
         <section className="relative">
           <header className="mb-3 flex items-end justify-between">
