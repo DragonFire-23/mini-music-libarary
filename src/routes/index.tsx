@@ -314,22 +314,32 @@ function Index() {
                   say(lamp ? "the room goes dim." : "warm light again.");
                 }}
               />
-              <RecordPlayer
-                spinning={playing}
-                onClick={() => {
-                  if (!currentSong) {
-                    const pick = data.songs[0];
-                    if (pick) {
-                      setNowPlaying(pick.id);
-                      setPlaying(true);
-                      say(`“${pick.title}” on the turntable.`);
+              <div className="flex flex-col items-end gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPanel({ kind: "listening" })}
+                  className="plate-type cursor-pointer rounded-[2px] border border-amber/35 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] text-parchment-dim/70 transition-colors hover:border-amber/70 hover:text-parchment"
+                >
+                  the listening room
+                </button>
+                <RecordPlayer
+                  spinning={playing}
+                  onClick={() => {
+                    if (!currentSong) {
+                      const pick = data.songs[0];
+                      if (pick) {
+                        setNowPlaying(pick.id);
+                        setPlaying(true);
+                        say(`“${pick.title}” on the turntable.`);
+                      }
+                    } else {
+                      setPlaying((p) => !p);
                     }
-                  } else {
-                    setPlaying((p) => !p);
-                  }
-                }}
-              />
+                  }}
+                />
+              </div>
             </div>
+
 
             {/* desk — built in perspective: receding top, front edge, legs */}
             <div className="relative [perspective:900px] [perspective-origin:50%_0%]">
