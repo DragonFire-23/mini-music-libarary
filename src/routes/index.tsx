@@ -193,7 +193,7 @@ function Index() {
 
       <h1 className="sr-only">The Little Music Library</h1>
 
-      <div className="relative mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-6 py-4 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:px-12">
+      <div className="relative mx-auto grid max-w-[1500px] grid-cols-1 gap-8 px-6 py-3 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:px-12">
         {/* ---------------- left: the bookcase wall ---------------- */}
         <section className="relative">
           <header className="mb-3 flex items-end justify-between">
@@ -213,7 +213,7 @@ function Index() {
             className="relative rounded-[3px] wood-deep-surface p-3 pb-4"
             style={{ boxShadow: "var(--shadow-shelf)" }}
           >
-            <div className="max-h-[48vh] space-y-0 overflow-y-auto pr-1 lg:max-h-[52vh]">
+            <div className="max-h-[46vh] space-y-0 overflow-y-auto pr-1 lg:max-h-[50vh]">
               {special.map((c) => (
                 <Shelf
                   key={c.id}
@@ -378,7 +378,7 @@ function Index() {
               />
 
               {/* legs and the shadowed underside */}
-              <div className="relative flex h-16 items-stretch justify-between px-5">
+              <div className="relative flex h-12 items-stretch justify-between px-5">
                 <div
                   className="w-6 wood-deep-surface"
                   style={{ clipPath: "polygon(0 0,100% 0,86% 100%,10% 100%)" }}
