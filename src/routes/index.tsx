@@ -50,7 +50,9 @@ type PanelState =
   | { kind: "collection"; id: string }
   | { kind: "intake" }
   | { kind: "notes" }
+  | { kind: "listening" }
   | { kind: "journal" };
+
 
 function Index() {
   const [data, setData] = useState<LibraryData>(() => ({
