@@ -533,6 +533,21 @@ function Index() {
         />
       )}
 
+      {panel.kind === "listening" && (
+        <ListeningRoom
+          onShelve={(song) => {
+            setData((d) => ({ ...d, songs: [song, ...d.songs] }));
+            setNewSongId(song.id);
+            setNowPlaying(song.id);
+            setPlaying(true);
+            say(`“${song.title}” is a book now.`);
+          }}
+          onClose={() => setPanel({ kind: "none" })}
+        />
+      )}
+
+
+
       {panel.kind === "journal" && (
         <DayJournal
           entries={data.prefs.journal ?? {}}
