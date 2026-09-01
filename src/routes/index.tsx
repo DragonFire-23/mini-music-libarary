@@ -544,12 +544,14 @@ function Clock({ onPeek }: { onPeek: (s: string) => void }) {
   const min = now ? now.getMinutes() : 0;
   const hr = now ? now.getHours() % 12 : 0;
 
+  const announce = () =>
+    onPeek(now ? `the clock says ${now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}.` : "…");
+
   return (
     <button
       type="button"
-      onClick={() =>
-        onPeek(now ? `the clock says ${now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}.` : "…")
-      }
+      onClick={announce}
+      onMouseEnter={announce}
       title="the clock"
       className="relative h-24 w-24 cursor-pointer rounded-full border-4 border-wood-light transition-transform duration-300 hover:scale-[1.04]"
       style={{
