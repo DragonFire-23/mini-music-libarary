@@ -20,6 +20,7 @@ import { DayJournal } from "@/components/library/DayJournal";
 import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
+import { deleteAudio } from "@/lib/audio-store";
 import pressedLeaf from "@/assets/pressed-leaf-cutout.png";
 import rainAudio from "@/assets/rain.webm.asset.json";
 
