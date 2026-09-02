@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { makeSpine, type Song } from "@/lib/library";
+import { localRef, putAudio } from "@/lib/audio-store";
 
 function titleFromFile(name: string) {
   const base = name.replace(/\.[a-z0-9]+$/i, "").replace(/[_]+/g, " ").trim();
@@ -25,13 +26,16 @@ export function IntakeDrop({
     Array.from(files).forEach((f) => {
       if (!f.type.startsWith("audio/") && !/\.(mp3|m4a|wav|ogg|flac|aac)$/i.test(f.name)) return;
       const { artist, title } = titleFromFile(f.name);
+      const id = `s-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      // keep the complete file so the whole track plays, now and after a reload
+      void putAudio(id, f);
       onAdd({
-        id: `s-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        id,
         title: title || f.name,
         artist,
         album: "",
         artwork: "",
-        url: URL.createObjectURL(f),
+        url: localRef(id),
         notes: "",
         moods: [],
         tags: [],
