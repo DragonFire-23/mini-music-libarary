@@ -147,6 +147,7 @@ function Index() {
     setData((d) => ({ ...d, songs: d.songs.filter((s) => s.id !== id) }));
     setPanel({ kind: "none" });
     if (nowPlaying === id) setNowPlaying(null);
+    void deleteAudio(id);
     say("book returned to the dust.");
   };
 
