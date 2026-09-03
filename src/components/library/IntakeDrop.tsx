@@ -2,9 +2,26 @@ import { useRef, useState } from "react";
 import { makeSpine, type Song } from "@/lib/library";
 import { localRef, putAudio } from "@/lib/audio-store";
 
+// YouTube Music / y2mate downloads arrive as webm, opus, m4a, mp4 audio, etc.
+const AUDIO_EXT = /\.(mp3|m4a|m4b|mp4|aac|wav|ogg|oga|opus|weba|webm|flac|aiff?|wma|mkv)$/i;
+
+function isAudioFile(f: File) {
+  if (f.type.startsWith("audio/")) return true;
+  if (AUDIO_EXT.test(f.name)) return true;
+  // some downloaders label audio-only webm/mp4 with a video mime type
+  return f.type.startsWith("video/") && AUDIO_EXT.test(f.name);
+}
+
 function titleFromFile(name: string) {
-  const base = name.replace(/\.[a-z0-9]+$/i, "").replace(/[_]+/g, " ").trim();
-  const parts = base.split(/\s+-\s+/);
+  const base = name
+    .replace(/\.[a-z0-9]+$/i, "")
+    .replace(/\[[^\]]*y2mate[^\]]*\]|\(y2mate[^)]*\)|y2mate(\.[a-z]+)*\s*[-–—_]*/gi, "")
+    .replace(/[([]\s*(official\s*(music\s*)?(video|audio|lyric[s]?\s*video)|lyrics?|hd|hq|4k|audio|visualizer|mv)\s*[)\]]/gi, "")
+    .replace(/[_]+/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s\-–—|]+|[\s\-–—|]+$/g, "")
+    .trim();
+  const parts = base.split(/\s+[-–—]\s+/);
   if (parts.length >= 2) return { artist: parts[0]!.trim(), title: parts.slice(1).join(" - ").trim() };
   return { artist: "", title: base };
 }
@@ -24,7 +41,7 @@ export function IntakeDrop({
     if (!files) return;
     const added: string[] = [];
     Array.from(files).forEach((f) => {
-      if (!f.type.startsWith("audio/") && !/\.(mp3|m4a|wav|ogg|flac|aac)$/i.test(f.name)) return;
+      if (!isAudioFile(f)) return;
       const { artist, title } = titleFromFile(f.name);
       const id = `s-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
       // keep the complete file so the whole track plays, now and after a reload
@@ -92,12 +109,12 @@ export function IntakeDrop({
             drop downloaded music here
           </p>
           <p className="hand mt-1 text-sm text-parchment-dim/55">
-            or click to choose files — they wait in the reading chair corner until you shelve them
+            or click to choose files — mp3, m4a, webm/opus from YouTube Music, and more; they wait in the reading chair corner until you shelve them
           </p>
           <input
             ref={inputRef}
             type="file"
-            accept="audio/*"
+            accept="audio/*,.mp3,.m4a,.m4b,.mp4,.aac,.wav,.ogg,.oga,.opus,.weba,.webm,.flac,.aif,.aiff,.wma,.mkv"
             multiple
             className="hidden"
             onChange={(e) => accept(e.target.files)}
