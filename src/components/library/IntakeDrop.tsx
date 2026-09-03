@@ -114,7 +114,7 @@ export function IntakeDrop({
           <input
             ref={inputRef}
             type="file"
-            accept="audio/*"
+            accept="audio/*,.mp3,.m4a,.m4b,.mp4,.aac,.wav,.ogg,.oga,.opus,.weba,.webm,.flac,.aif,.aiff,.wma,.mkv"
             multiple
             className="hidden"
             onChange={(e) => accept(e.target.files)}
