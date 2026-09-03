@@ -109,7 +109,7 @@ export function IntakeDrop({
             drop downloaded music here
           </p>
           <p className="hand mt-1 text-sm text-parchment-dim/55">
-            or click to choose files — they wait in the reading chair corner until you shelve them
+            or click to choose files — mp3, m4a, webm/opus from YouTube Music, and more; they wait in the reading chair corner until you shelve them
           </p>
           <input
             ref={inputRef}
