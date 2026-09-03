@@ -41,7 +41,7 @@ export function IntakeDrop({
     if (!files) return;
     const added: string[] = [];
     Array.from(files).forEach((f) => {
-      if (!f.type.startsWith("audio/") && !/\.(mp3|m4a|wav|ogg|flac|aac)$/i.test(f.name)) return;
+      if (!isAudioFile(f)) return;
       const { artist, title } = titleFromFile(f.name);
       const id = `s-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
       // keep the complete file so the whole track plays, now and after a reload
