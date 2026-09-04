@@ -126,7 +126,7 @@ export function Player({
 
   return (
     <div
-      className="animate-soft-in pointer-events-auto w-[290px] rounded-[3px] wood-surface p-3.5"
+      className="animate-soft-in pointer-events-auto w-[380px] rounded-[4px] wood-surface p-5"
       style={{ boxShadow: "var(--shadow-shelf)" }}
     >
       {src && (
