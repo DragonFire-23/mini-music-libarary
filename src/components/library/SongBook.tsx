@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Collection, Song } from "@/lib/library";
 import { MOODS } from "@/lib/library";
+import { isLocalRef } from "@/lib/audio-store";
 import { VolumeKnob } from "./VolumeKnob";
 
 export function SongBook({
@@ -88,12 +89,17 @@ export function SongBook({
                   external record
                 </label>
                 <input
-                  value={draft.url}
+                  value={isLocalRef(draft.url) ? "" : draft.url}
                   onChange={(e) => commit({ url: e.target.value })}
                   placeholder="paste a Spotify or YouTube link"
                   className="mt-1 w-full border-b border-ink/25 bg-transparent pb-1 text-sm outline-none placeholder:opacity-40 focus:border-ink/60"
                 />
-                {draft.url && (
+                {isLocalRef(draft.url) && (
+                  <p className="hand mt-2 text-sm opacity-70">
+                    a downloaded copy lives on the shelf — it always plays first.
+                  </p>
+                )}
+                {draft.url && !isLocalRef(draft.url) && (
                   <a
                     href={draft.url}
                     target="_blank"

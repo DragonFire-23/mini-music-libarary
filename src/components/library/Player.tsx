@@ -29,53 +29,53 @@ export function Player({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const source = useMemo(() => classifySource(song.url || ""), [song.url]);
-  const embed = source.kind === "embed" ? source : null;
+  const [hasDownload, setHasDownload] = useState(false);
+  // the service's own player is only used when there is no downloaded file
+  const embed = source.kind === "embed" && !hasDownload && !looking ? source : null;
 
-  // resolve the best complete source we are actually allowed to play
+  // resolve the best complete source we are actually allowed to play.
+  // a downloaded file the user brought in ALWAYS wins over any external link.
   useEffect(() => {
     let dead = false;
     let objectUrl: string | null = null;
+    let ac: AbortController | null = null;
     setSrc(null);
     setIsPreview(false);
     setElapsed(0);
     setFileTotal(0);
+    setLooking(true);
 
-    if (source.kind === "embed") return;
-
-    if (source.kind === "local") {
-      setLooking(true);
-      getAudio(song.id)
-        .then((blob) => {
-          if (dead || !blob) return;
+    getAudio(song.id)
+      .then((blob) => {
+        if (dead) return;
+        if (blob) {
+          setHasDownload(true);
           objectUrl = URL.createObjectURL(blob);
           setSrc(objectUrl);
-        })
-        .finally(() => !dead && setLooking(false));
-      return () => {
-        dead = true;
-        if (objectUrl) URL.revokeObjectURL(objectUrl);
-      };
-    }
-
-    if (source.kind === "file") {
-      setSrc(song.url);
-      return;
-    }
-
-    // only a webpage (or nothing) — fall back to the catalogue's short preview,
-    // and say so plainly rather than passing it off as the whole song
-    const ac = new AbortController();
-    setLooking(true);
-    findTrackPreview(song.title, song.artist, ac.signal)
-      .then((r) => {
-        if (dead || !r?.previewUrl) return;
-        setSrc(r.previewUrl);
-        setIsPreview(true);
+          return;
+        }
+        setHasDownload(false);
+        // no downloaded copy — fall back to whatever the saved url offers
+        if (source.kind === "file") {
+          setSrc(song.url);
+          return;
+        }
+        if (source.kind === "embed") return; // the embed below takes over
+        // only a webpage (or nothing) — the catalogue's short preview,
+        // said plainly rather than passed off as the whole song
+        ac = new AbortController();
+        findTrackPreview(song.title, song.artist, ac.signal).then((r) => {
+          if (dead || !r?.previewUrl) return;
+          setSrc(r.previewUrl);
+          setIsPreview(true);
+        });
       })
       .finally(() => !dead && setLooking(false));
+
     return () => {
       dead = true;
-      ac.abort();
+      ac?.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [song.id, song.url, song.title, song.artist, source.kind]);
 
