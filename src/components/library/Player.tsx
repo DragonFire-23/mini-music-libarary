@@ -31,7 +31,8 @@ export function Player({
   const source = useMemo(() => classifySource(song.url || ""), [song.url]);
   const embed = source.kind === "embed" ? source : null;
 
-  // resolve the best complete source we are actually allowed to play
+  // resolve the best complete source we are actually allowed to play.
+  // a downloaded file the user brought in ALWAYS wins over any external link.
   useEffect(() => {
     let dead = false;
     let objectUrl: string | null = null;
@@ -40,9 +41,8 @@ export function Player({
     setElapsed(0);
     setFileTotal(0);
 
-    if (source.kind === "embed") return;
-
-    if (source.kind === "local") {
+    if (source.kind === "embed") {
+      // even then, a downloaded file takes priority over the embed
       setLooking(true);
       getAudio(song.id)
         .then((blob) => {
@@ -57,6 +57,42 @@ export function Player({
       };
     }
 
+    setLooking(true);
+    getAudio(song.id)
+      .then((blob) => {
+        if (dead) return;
+        if (blob) {
+          objectUrl = URL.createObjectURL(blob);
+          setSrc(objectUrl);
+          return;
+        }
+        // no downloaded copy — fall back to whatever the saved url offers
+        if (source.kind === "file") {
+          setSrc(song.url);
+          return;
+        }
+        // only a webpage (or nothing) — the catalogue's short preview,
+        // said plainly rather than passed off as the whole song
+        const ac = new AbortController();
+        cleanupPreview = () => ac.abort();
+        findTrackPreview(song.title, song.artist, ac.signal).then((r) => {
+          if (dead || !r?.previewUrl) return;
+          setSrc(r.previewUrl);
+          setIsPreview(true);
+        });
+      })
+      .finally(() => !dead && setLooking(false));
+
+    let cleanupPreview: (() => void) | undefined;
+    return () => {
+      dead = true;
+      cleanupPreview?.();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [song.id, song.url, song.title, song.artist, source.kind]);
+
+  if (false) {
+    // legacy branch kept out of the render path
     if (source.kind === "file") {
       setSrc(song.url);
       return;
