@@ -283,3 +283,27 @@ function parseDuration(d?: string) {
   if (Number.isNaN(m as number)) return 0;
   return (m || 0) * 60 + (s || 0);
 }
+
+function ScrollingText({ text, className }: { text: string; className?: string }) {
+  const outerRef = useRef<HTMLDivElement | null>(null);
+  const innerRef = useRef<HTMLSpanElement | null>(null);
+  const [needsScroll, setNeedsScroll] = useState(false);
+
+  useEffect(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer || !inner) return;
+    setNeedsScroll(inner.scrollWidth > outer.clientWidth);
+  }, [text]);
+
+  return (
+    <div ref={outerRef} className="relative w-full overflow-hidden whitespace-nowrap">
+      <span
+        ref={innerRef}
+        className={`inline-block ${className ?? ""} ${needsScroll ? "animate-marquee" : ""}`}
+      >
+        {text}
+      </span>
+    </div>
+  );
+}
