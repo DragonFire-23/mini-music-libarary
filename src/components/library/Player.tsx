@@ -126,7 +126,7 @@ export function Player({
 
   return (
     <div
-      className="animate-soft-in pointer-events-auto w-[290px] rounded-[3px] wood-surface p-3.5"
+      className="animate-soft-in pointer-events-auto w-[380px] rounded-[4px] wood-surface p-5"
       style={{ boxShadow: "var(--shadow-shelf)" }}
     >
       {src && (
@@ -151,33 +151,33 @@ export function Player({
         />
       )}
 
-      <div className="flex items-center gap-3">
-        <div className="relative h-14 w-14 shrink-0">
+      <div className="flex items-center gap-4">
+        <div className="relative h-20 w-20 shrink-0">
           <div
             className="absolute inset-0 rounded-full bg-[radial-gradient(circle,oklch(0.2_0.02_60)_18%,oklch(0.13_0.01_60)_19%,oklch(0.17_0.015_60)_60%,oklch(0.12_0.01_60))]"
             style={{ animation: playing ? "spin-record 3.6s linear infinite" : undefined }}
           >
-            <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber/80" />
+            <span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber/80" />
           </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[15px] leading-tight text-parchment">{song.title}</p>
-          <p className="hand truncate text-sm leading-tight text-parchment-dim/70">{song.artist}</p>
+        <div className="min-w-0 flex-1 overflow-hidden">
+          <ScrollingText className="text-lg leading-tight text-parchment" text={song.title} />
+          <ScrollingText className="hand text-base leading-tight text-parchment-dim/70" text={song.artist} />
         </div>
         {!embed && (
           <button
             type="button"
             onClick={onToggle}
             aria-label={playing ? "pause" : "play"}
-            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-amber/50 text-amber transition-colors hover:bg-amber/15"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-amber/50 text-amber transition-colors hover:bg-amber/15"
           >
             {playing ? (
-              <span className="flex gap-[3px]">
-                <span className="block h-3.5 w-[3px] bg-current" />
-                <span className="block h-3.5 w-[3px] bg-current" />
+              <span className="flex gap-1">
+                <span className="block h-4 w-1 bg-current" />
+                <span className="block h-4 w-1 bg-current" />
               </span>
             ) : (
-              <span className="ml-[3px] block h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-current" />
+              <span className="ml-1 block h-0 w-0 border-y-[9px] border-l-[13px] border-y-transparent border-l-current" />
             )}
           </button>
         )}
@@ -200,16 +200,16 @@ export function Player({
         </div>
       ) : (
         <>
-          <div className="mt-3 flex items-center gap-2">
+          <div className="mt-4 flex items-center gap-3">
             <VolumeKnob
               value={volume}
               onChange={onVolume}
               label="record volume"
-              size={30}
+              size={38}
               muted={volume === 0}
               onToggleMute={() => onVolume(volume === 0 ? 0.7 : 0)}
             />
-            <span className="plate-type text-[9px] uppercase tracking-widest text-parchment-dim/50">
+            <span className="plate-type text-[10px] uppercase tracking-widest text-parchment-dim/50">
               volume
             </span>
             <button
@@ -282,4 +282,28 @@ function parseDuration(d?: string) {
   const [m, s] = d.split(":").map((n) => parseInt(n, 10));
   if (Number.isNaN(m as number)) return 0;
   return (m || 0) * 60 + (s || 0);
+}
+
+function ScrollingText({ text, className }: { text: string; className?: string }) {
+  const outerRef = useRef<HTMLDivElement | null>(null);
+  const innerRef = useRef<HTMLSpanElement | null>(null);
+  const [needsScroll, setNeedsScroll] = useState(false);
+
+  useEffect(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer || !inner) return;
+    setNeedsScroll(inner.scrollWidth > outer.clientWidth);
+  }, [text]);
+
+  return (
+    <div ref={outerRef} className="relative w-full overflow-hidden whitespace-nowrap">
+      <span
+        ref={innerRef}
+        className={`inline-block ${className ?? ""} ${needsScroll ? "animate-marquee" : ""}`}
+      >
+        {text}
+      </span>
+    </div>
+  );
 }
