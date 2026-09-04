@@ -160,9 +160,9 @@ export function Player({
             <span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber/80" />
           </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-lg leading-tight text-parchment">{song.title}</p>
-          <p className="hand truncate text-base leading-tight text-parchment-dim/70">{song.artist}</p>
+        <div className="min-w-0 flex-1 overflow-hidden">
+          <ScrollingText className="text-lg leading-tight text-parchment" text={song.title} />
+          <ScrollingText className="hand text-base leading-tight text-parchment-dim/70" text={song.artist} />
         </div>
         {!embed && (
           <button
