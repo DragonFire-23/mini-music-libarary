@@ -242,14 +242,14 @@
   0% {
     transform: translateX(0);
   }
-  10% {
+  12% {
     transform: translateX(0);
   }
-  90% {
-    transform: translateX(calc(-100% + 100vw));
+  88% {
+    transform: translateX(calc(var(--scroll-distance, 0px) * -1));
   }
   100% {
-    transform: translateX(calc(-100% + 100vw));
+    transform: translateX(calc(var(--scroll-distance, 0px) * -1));
   }
 }
 
