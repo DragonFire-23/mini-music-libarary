@@ -297,3 +297,7 @@
 @utility animate-flicker {
   animation: flicker 6s ease-in-out infinite;
 }
+
+@utility animate-marquee {
+  animation: marquee 8s ease-in-out infinite;
+}
