@@ -238,6 +238,21 @@
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(calc(-100% + 100vw));
+  }
+  100% {
+    transform: translateX(calc(-100% + 100vw));
+  }
+}
+
 @keyframes book-slot-in {
   0% {
     transform: translateY(-30px) rotate(6deg);
