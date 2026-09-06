@@ -206,7 +206,8 @@ export class RainAmbience {
     // A real rain recording, looped and routed through the same master gain.
     if (url) {
       const el = new Audio(url);
-      el.loop = true;
+      const LOOP_OFFSET = 3;
+      el.loop = false;
       el.preload = "auto";
       el.id = "rain-source";
       document.body.appendChild(el);
@@ -214,7 +215,14 @@ export class RainAmbience {
       src.connect(master);
       master.connect(ctx.destination);
       el.volume = 0.9;
-      void el.play().catch(() => {});
+
+      const startAtOffset = () => {
+        el.currentTime = LOOP_OFFSET;
+        void el.play().catch(() => {});
+      };
+      el.addEventListener("ended", startAtOffset);
+      el.addEventListener("loadedmetadata", startAtOffset, { once: true });
+
       this.el = el;
       this.master = master;
       return;
