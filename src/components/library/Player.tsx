@@ -293,7 +293,9 @@ function ScrollingText({ text, className }: { text: string; className?: string }
     const outer = outerRef.current;
     const inner = innerRef.current;
     if (!outer || !inner) return;
-    setNeedsScroll(inner.scrollWidth > outer.clientWidth);
+    const overflow = inner.scrollWidth - outer.clientWidth;
+    setNeedsScroll(overflow > 0);
+    outer.style.setProperty("--scroll-distance", `${Math.max(0, overflow)}px`);
   }, [text]);
 
   return (
