@@ -21,6 +21,10 @@ import { Player } from "@/components/library/Player";
 import { VolumeKnob } from "@/components/library/VolumeKnob";
 import { ClockTick, RainAmbience } from "@/lib/audio";
 import { deleteAudio } from "@/lib/audio-store";
+import { useReader } from "@/lib/session";
+import { pushSong, removeSongCloud, syncSongs } from "@/lib/cloud";
+import { supabase } from "@/integrations/supabase/client";
+import { Link, useNavigate } from "@tanstack/react-router";
 import pressedLeaf from "@/assets/pressed-leaf-cutout.png";
 import rainAudio from "@/assets/rain.webm.asset.json";
 
@@ -71,6 +75,34 @@ function Index() {
     setData(loadLibrary());
     setReady(true);
   }, []);
+
+  const { reader } = useReader();
+  const navigate = useNavigate();
+  const syncedFor = useRef<string | null>(null);
+
+  // when a card holder arrives, marry the shelf in this browser to their account
+  useEffect(() => {
+    if (!ready || !reader) return;
+    if (syncedFor.current === reader.id) return;
+    syncedFor.current = reader.id;
+    let alive = true;
+    void (async () => {
+      const merged = await syncSongs(loadLibrary().songs, reader.id);
+      if (alive) setData((d) => ({ ...d, songs: merged }));
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [ready, reader]);
+
+  useEffect(() => {
+    if (!reader) syncedFor.current = null;
+  }, [reader]);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    void navigate({ to: "/auth" });
+  };
 
   // browsers need a gesture before any sound is allowed
   const [gestured, setGestured] = useState(false);
@@ -141,14 +173,17 @@ function Index() {
   const ordinary = data.collections.filter((c) => !c.special);
   const special = data.collections.filter((c) => c.special);
 
-  const updateSong = (s: Song) =>
+  const updateSong = (s: Song) => {
     setData((d) => ({ ...d, songs: d.songs.map((x) => (x.id === s.id ? s : x)) }));
+    if (reader) void pushSong(s, reader.id);
+  };
 
   const removeSong = (id: string) => {
     setData((d) => ({ ...d, songs: d.songs.filter((s) => s.id !== id) }));
     setPanel({ kind: "none" });
     if (nowPlaying === id) setNowPlaying(null);
     void deleteAudio(id);
+    if (reader) void removeSongCloud(id, reader.id);
     say("book returned to the dust.");
   };
 
@@ -285,7 +320,30 @@ function Index() {
             </div>
 
             <div className="flex flex-1 flex-col items-center gap-4 pt-1">
-              <Clock onPeek={say} />
+              <div className="flex items-start gap-3">
+                <Clock onPeek={say} />
+                <div className="pt-1 text-right">
+                  {reader ? (
+                    <>
+                      <p className="hand text-lg leading-tight text-parchment/85">{reader.name}</p>
+                      <button
+                        type="button"
+                        onClick={() => void signOut()}
+                        className="hand cursor-pointer text-sm text-parchment-dim/50 hover:text-parchment"
+                      >
+                        sign out
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      to="/auth"
+                      className="hand text-lg text-parchment-dim/60 hover:text-parchment"
+                    >
+                      library card →
+                    </Link>
+                  )}
+                </div>
+              </div>
               <Plant />
               <FramedPrint onPeek={say} />
             </div>
@@ -503,6 +561,7 @@ function Index() {
         <IntakeDrop
           onAdd={(s) => {
             setData((d) => ({ ...d, songs: [...d.songs, s] }));
+            if (reader) void pushSong(s, reader.id);
             setNewSongId(s.id);
             say(`“${s.title}” set down in the corner.`);
             setTimeout(() => setNewSongId(null), 1200);
