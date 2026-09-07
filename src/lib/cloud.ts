@@ -61,7 +61,7 @@ function songToRow(s: Song, userId: string, audioPath: string | null) {
     tags: s.tags,
     collection_id: s.collectionId,
     date_added: s.dateAdded,
-    spine: s.spine as unknown as Record<string, unknown>,
+    spine: JSON.parse(JSON.stringify(s.spine)) as never,
     audio_path: audioPath,
     updated_at: new Date().toISOString(),
   };
