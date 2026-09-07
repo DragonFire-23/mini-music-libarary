@@ -30,7 +30,7 @@ import rainAudio from "@/assets/rain.webm.asset.json";
 
 
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/library")({
   head: () => ({
     meta: [
       { title: "The Little Music Library — a cozy room for your songs" },
