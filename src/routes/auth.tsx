@@ -34,7 +34,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) void navigate({ to: "/", replace: true });
+      if (data.session) void navigate({ to: "/library", replace: true });
     });
   }, [navigate]);
 
@@ -68,7 +68,7 @@ function AuthPage() {
         });
         if (error) throw error;
       }
-      void navigate({ to: "/", replace: true });
+      void navigate({ to: "/library", replace: true });
     } catch (err) {
       setNote(err instanceof Error ? err.message : "That didn't work. Try again.");
     } finally {
@@ -160,7 +160,7 @@ function AuthPage() {
         </button>
 
         <Link
-          to="/"
+          to="/library"
           className="hand mt-4 block text-center text-sm text-parchment-dim/45 hover:text-parchment-dim"
         >
           ← back to the room
