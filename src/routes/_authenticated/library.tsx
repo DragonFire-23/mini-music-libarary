@@ -33,16 +33,15 @@ import rainAudio from "@/assets/rain.webm.asset.json";
 export const Route = createFileRoute("/_authenticated/library")({
   head: () => ({
     meta: [
-      { title: "The Little Music Library — a cozy room for your songs" },
+      { title: "Your Library — The Little Music Library" },
       {
         name: "description",
-        content:
-          "A small, lamplit library where every song you save becomes a book on the shelf. Notes, moods, collections and a quiet record player.",
+        content: "Your personal lamplit room where every saved song becomes a book on the shelf.",
       },
-      { property: "og:title", content: "The Little Music Library" },
+      { property: "og:title", content: "Your Library — The Little Music Library" },
       {
         property: "og:description",
-        content: "Step into a warm wooden room where your music collection is shelved as books.",
+        content: "Your personal lamplit room where every saved song becomes a book on the shelf.",
       },
     ],
   }),
