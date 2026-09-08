@@ -23,11 +23,19 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+const normalize = (u: string) =>
+  u
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, "");
+
+const cardEmail = (u: string) => `${normalize(u)}@card.local`;
+
 function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"in" | "up">("in");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
@@ -40,33 +48,45 @@ function AuthPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const handle = normalize(username);
+    if (handle.length < 3) {
+      setNote("Pick a username with at least 3 letters or numbers.");
+      return;
+    }
     setBusy(true);
     setNote(null);
     try {
       if (mode === "up") {
         const { error } = await supabase.auth.signUp({
-          email: email.trim(),
+          email: cardEmail(handle),
           password,
           options: {
-            emailRedirectTo: window.location.origin,
-            data: { display_name: name.trim() || email.split("@")[0] },
+            data: { display_name: name.trim() || handle, username: handle },
           },
         });
-        if (error) throw error;
+        if (error) {
+          const msg = error.message.toLowerCase();
+          if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+            throw new Error("That username is already taken — please pick another.");
+          }
+          throw error;
+        }
         const { error: inErr } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
+          email: cardEmail(handle),
           password,
         });
-        if (inErr) {
-          setNote("Card made. Check your email to confirm, then come back and sign in.");
-          return;
-        }
+        if (inErr) throw inErr;
       } else {
         const { error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
+          email: cardEmail(handle),
           password,
         });
-        if (error) throw error;
+        if (error) {
+          if (error.message.toLowerCase().includes("invalid login")) {
+            throw new Error("That username and password don't match a card here.");
+          }
+          throw error;
+        }
       }
       void navigate({ to: "/library", replace: true });
     } catch (err) {
