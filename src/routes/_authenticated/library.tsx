@@ -45,7 +45,7 @@ export const Route = createFileRoute("/_authenticated/library")({
       },
     ],
   }),
-  component: Index,
+  component: LibraryPage,
 });
 
 type PanelState =
@@ -56,7 +56,7 @@ type PanelState =
   | { kind: "notes" }
   | { kind: "journal" };
 
-function Index() {
+function LibraryPage() {
   const [data, setData] = useState<LibraryData>(() => ({
     songs: [],
     collections: defaultCollections,
