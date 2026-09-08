@@ -68,7 +68,7 @@ function AuthPage() {
         });
         if (error) throw error;
       }
-      void navigate({ to: "/", replace: true });
+      void navigate({ to: "/library", replace: true });
     } catch (err) {
       setNote(err instanceof Error ? err.message : "That didn't work. Try again.");
     } finally {
