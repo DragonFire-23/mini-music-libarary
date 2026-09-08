@@ -13,14 +13,15 @@ export function useReader() {
     const load = async (userId: string, email: string) => {
       const { data } = await supabase
         .from("profiles")
-        .select("display_name")
+        .select("display_name, username")
         .eq("id", userId)
         .maybeSingle();
       if (!alive) return;
+      const handle = data?.username?.trim() || email.split("@")[0] || "reader";
       setReader({
         id: userId,
-        email,
-        name: data?.display_name?.trim() || email.split("@")[0] || "reader",
+        username: handle,
+        name: data?.display_name?.trim() || handle,
       });
     };
 
