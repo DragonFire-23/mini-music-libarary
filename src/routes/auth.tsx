@@ -134,15 +134,22 @@ function AuthPage() {
         )}
 
         <label className="mt-4 block">
-          <span className="hand text-base text-parchment-dim/70">email</span>
+          <span className="hand text-base text-parchment-dim/70">username</span>
           <input
-            type="email"
+            type="text"
             required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            minLength={3}
+            autoComplete="username"
+            placeholder="your very own name — no two are alike"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="hand mt-1 w-full rounded-[3px] border border-parchment-dim/25 bg-ink/40 px-3 py-2 text-lg text-parchment outline-none focus:border-parchment-dim/60"
           />
+          {mode === "up" && (
+            <span className="hand mt-1 block text-sm text-parchment-dim/50">
+              usernames can't be shared — if it's taken, you'll be asked for another
+            </span>
+          )}
         </label>
 
         <label className="mt-4 block">
