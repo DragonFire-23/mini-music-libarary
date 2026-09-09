@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export type Reader = { id: string; email: string; name: string } | null;
+export type Reader = { id: string; username: string; name: string } | null;
 
 export function useReader() {
   const [reader, setReader] = useState<Reader>(null);
