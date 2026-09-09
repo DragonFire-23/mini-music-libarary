@@ -165,7 +165,10 @@ function LibraryPage() {
     whisperTimer.current = setTimeout(() => setWhisper(null), 3200);
   };
 
-  const songsFor = (id: string) => data.songs.filter((s) => s.collectionId === id);
+  const songsFor = (id: string) =>
+    data.songs
+      .filter((s) => s.collectionId === id)
+      .sort((a, b) => genreRank(a.genre) - genreRank(b.genre) || a.title.localeCompare(b.title));
   const currentSong = data.songs.find((s) => s.id === nowPlaying) ?? null;
   const weekly = addedThisWeek(data.songs);
 

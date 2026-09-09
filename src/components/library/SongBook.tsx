@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Collection, Song } from "@/lib/library";
-import { MOODS } from "@/lib/library";
+import { MOODS, GENRES, GENRE_COLORS } from "@/lib/library";
 import { isLocalRef } from "@/lib/audio-store";
 import { VolumeKnob } from "./VolumeKnob";
 
@@ -183,6 +183,28 @@ export function SongBook({
               placeholder="comma, separated"
               className="hand mt-1 w-full border-b border-ink/25 bg-transparent pb-1 text-lg outline-none placeholder:opacity-40 focus:border-ink/60"
             />
+
+            <label className="plate-type mt-4 block text-[10px] uppercase tracking-wider opacity-60">genre</label>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {GENRES.map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  onClick={() => commit({ genre: g })}
+                  className={`hand flex items-center gap-1.5 rounded-[2px] border px-2 py-0.5 text-sm transition-colors ${
+                    (draft.genre ?? "other") === g
+                      ? "border-ink/60 bg-ink/15"
+                      : "border-ink/20 opacity-55 hover:opacity-90"
+                  }`}
+                >
+                  <span
+                    className="inline-block h-2.5 w-2.5 rounded-[1px]"
+                    style={{ background: GENRE_COLORS[g] }}
+                  />
+                  {g}
+                </button>
+              ))}
+            </div>
 
             <label className="plate-type mt-4 block text-[10px] uppercase tracking-wider opacity-60">shelf</label>
             <select

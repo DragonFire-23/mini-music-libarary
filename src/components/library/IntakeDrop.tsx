@@ -56,6 +56,7 @@ export function IntakeDrop({
         notes: "",
         moods: [],
         tags: [],
+        genre: "other",
         collectionId: "unknown",
         dateAdded: new Date().toISOString(),
         spine: makeSpine(),

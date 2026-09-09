@@ -40,6 +40,7 @@ function rowToSong(r: Row): Song {
     notes: r.notes,
     moods: r.moods ?? [],
     tags: r.tags ?? [],
+    genre: (r.genre as Song["genre"]) ?? "other",
     collectionId: r.collection_id,
     dateAdded: r.date_added,
     spine,

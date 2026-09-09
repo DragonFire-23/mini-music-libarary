@@ -1,3 +1,20 @@
+export const GENRES = ["pop", "rock", "indie", "classical", "instrumental", "other"] as const;
+export type Genre = (typeof GENRES)[number];
+
+export const GENRE_COLORS: Record<Genre, string> = {
+  pop: "oklch(0.62 0.19 350)",
+  rock: "oklch(0.5 0.17 25)",
+  indie: "oklch(0.55 0.12 150)",
+  classical: "oklch(0.68 0.11 85)",
+  instrumental: "oklch(0.55 0.1 235)",
+  other: "oklch(0.5 0.02 60)",
+};
+
+export function genreRank(genre: string | undefined): number {
+  const i = GENRES.indexOf((genre as Genre) ?? "other");
+  return i === -1 ? GENRES.length - 1 : i;
+}
+
 export type Song = {
   id: string;
   title: string;
@@ -9,6 +26,7 @@ export type Song = {
   notes: string;
   moods: string[];
   tags: string[];
+  genre: Genre;
   collectionId: string;
   dateAdded: string;
   spine: SpineStyle;
