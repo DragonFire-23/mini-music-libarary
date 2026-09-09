@@ -1,4 +1,5 @@
 import type { Song } from "@/lib/library";
+import { GENRE_COLORS } from "@/lib/library";
 
 export function BookSpine({
   song,
@@ -58,6 +59,15 @@ export function BookSpine({
       {s.label === "plate" && (
         <span className="absolute left-1/2 top-1.5 h-1.5 w-3 -translate-x-1/2 rounded-[1px] bg-amber/60" />
       )}
+      {/* genre tag at the foot of the spine */}
+      <span
+        className="absolute inset-x-[15%] bottom-1 h-[5px] rounded-[1px]"
+        title={song.genre ?? "other"}
+        style={{
+          background: GENRE_COLORS[song.genre ?? "other"],
+          boxShadow: "0 0 3px oklch(0 0 0/0.5), inset 0 1px 0 oklch(1 0 0/0.35)",
+        }}
+      />
       {s.bookmark && (
         <span className="absolute -top-3 left-1/2 h-4 w-1.5 -translate-x-1/2 rounded-b-[1px] bg-destructive/80" />
       )}

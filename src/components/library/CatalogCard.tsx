@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { Collection, Song } from "@/lib/library";
-import { MOODS, makeSpine } from "@/lib/library";
+import type { Collection, Song, Genre } from "@/lib/library";
+import { MOODS, makeSpine, GENRES } from "@/lib/library";
 import { Overlay } from "./SongBook";
 
 export function CatalogCard({
@@ -24,6 +24,7 @@ export function CatalogCard({
     collectionId: collections[0]?.id ?? "favorites",
   });
   const [moods, setMoods] = useState<string[]>([]);
+  const [genre, setGenre] = useState<Genre>("other");
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +40,7 @@ export function CatalogCard({
       notes: f.notes,
       moods,
       tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
+      genre,
       collectionId: f.collectionId,
       dateAdded: new Date().toISOString(),
       spine: makeSpine(Date.now() % 9973),
@@ -109,19 +111,34 @@ export function CatalogCard({
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {field("Tags", "tags", "comma, separated")}
           <div>
-            <label className="plate-type block text-[10px] uppercase tracking-wider opacity-55">Shelf</label>
+            <label className="plate-type block text-[10px] uppercase tracking-wider opacity-55">Genre</label>
             <select
-              value={f.collectionId}
-              onChange={(e) => setF({ ...f, collectionId: e.target.value })}
+              value={genre}
+              onChange={(e) => setGenre(e.target.value as Genre)}
               className="w-full border-b border-ink/30 bg-transparent pb-1 text-sm outline-none"
             >
-              {collections.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
+              {GENRES.map((g) => (
+                <option key={g} value={g}>
+                  {g}
                 </option>
               ))}
             </select>
           </div>
+        </div>
+
+        <div className="mt-4">
+          <label className="plate-type block text-[10px] uppercase tracking-wider opacity-55">Shelf</label>
+          <select
+            value={f.collectionId}
+            onChange={(e) => setF({ ...f, collectionId: e.target.value })}
+            className="w-full border-b border-ink/30 bg-transparent pb-1 text-sm outline-none"
+          >
+            {collections.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="mt-7 flex items-center justify-between">

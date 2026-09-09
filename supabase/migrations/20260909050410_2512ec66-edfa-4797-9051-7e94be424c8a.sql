@@ -1,0 +1,1 @@
+ALTER TABLE public.songs ADD COLUMN genre TEXT NOT NULL DEFAULT 'other';

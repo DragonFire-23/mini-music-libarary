@@ -19,6 +19,7 @@ type Row = {
   notes: string;
   moods: string[];
   tags: string[];
+  genre: string | null;
   collection_id: string;
   date_added: string;
   spine: unknown;
@@ -40,6 +41,7 @@ function rowToSong(r: Row): Song {
     notes: r.notes,
     moods: r.moods ?? [],
     tags: r.tags ?? [],
+    genre: (r.genre as Song["genre"]) ?? "other",
     collectionId: r.collection_id,
     dateAdded: r.date_added,
     spine,
@@ -59,6 +61,7 @@ function songToRow(s: Song, userId: string, audioPath: string | null) {
     notes: s.notes,
     moods: s.moods,
     tags: s.tags,
+    genre: s.genre ?? "other",
     collection_id: s.collectionId,
     date_added: s.dateAdded,
     spine: JSON.parse(JSON.stringify(s.spine)) as never,

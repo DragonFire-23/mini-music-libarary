@@ -44,6 +44,7 @@ export type Database = {
           collection_id: string
           date_added: string
           duration: string | null
+          genre: string
           id: string
           moods: string[]
           notes: string
@@ -62,6 +63,7 @@ export type Database = {
           collection_id?: string
           date_added?: string
           duration?: string | null
+          genre?: string
           id: string
           moods?: string[]
           notes?: string
@@ -80,6 +82,7 @@ export type Database = {
           collection_id?: string
           date_added?: string
           duration?: string | null
+          genre?: string
           id?: string
           moods?: string[]
           notes?: string
