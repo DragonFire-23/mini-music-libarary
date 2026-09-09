@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   addedThisWeek,
   defaultCollections,
+  genreRank,
   loadLibrary,
   saveLibrary,
   type LibraryData,
